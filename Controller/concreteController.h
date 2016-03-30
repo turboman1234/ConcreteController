@@ -8,8 +8,8 @@
 #define SKIP_CART_UP_INPUT                       INPUT_4 // cart is UP
 #define SKIP_CART_DOWN_INPUT                     INPUT_5 // cart is DOWN
 #define SKIP_CART_READY_INPUT                    INPUT_6 // cart is READY
-#define EMRGENCY_STOP_BUTTON_INPUT               INPUT_7 // not used
-#define LOOSE_SKIP_CART_ROPE_INPUT               INPUT_8 // indicates alarm state
+#define LOOSE_SKIP_CART_ROPE_INPUT               INPUT_7 // indicates alarm state
+
 #define CEMENT_SCALE_ANALOG_INPUT                ADC_2
 #define INERT_SCALE_VALUE_ADDRESS                0
 #define WATER_SCALE_VALUE_ADDRESS                1
@@ -36,13 +36,32 @@
 #define SKIP_CART_UP_BUTTON                      BUTTON_7
 #define SKIP_CART_DOWN_BUTTON                    BUTTON_8
 
+//LEDs
+#define CEMENT_VALVE_LED                        LED_1
+#define WATER_VALVE_LED                         LED_2
+#define MIXER_VALVE_LED                         LED_3
+#define CART_IS_DOWN_LED                        LED_4
+#define CART_IS_UP_LED                          LED_5
+#define MANUAL_MODE_LED                         LED_6
+#define AUTO_MODE_LED                           LED_7
+
 //Switches
 #define MANUAL_AUTO_MODE_SWITCH                  SWITCH_1
 #define EMPTY_WATER_SWITCH                       SWITCH_2
 
+//Timers
+#define MIXER_TIMER                              TIMER_1
+
 // Constant Types
 #define OPENED                                   OFF
 #define CLOSED                                   ON
+
+//Constants
+#define SAND_QUANTITY                            500
+#define GRAVEL_QUANTITY                          750
+#define CEMENT_QUANTITY                          500
+#define WATER_QUANTITY                           250
+#define MIXING_TIME                              120 * T_1_S
 
 typedef enum ControllerStates{
     ePrepareForRecipeExecution = 0xAA,
@@ -50,15 +69,28 @@ typedef enum ControllerStates{
     eDoseGravel,
     eDoseCement,
     eDoseWater,
-    eOpenMixer,
     eEmptyInertMaterials,
     eEmptyCement,
     eEmptyWater,
-    eMixingMaterials
+    eMixingMaterials,
+    eOpenMixer
 }tAutoModeStates;
 
+typedef struct RecipeType{
+    unsigned short sandQuantity;
+    unsigned short gravelQuantity;
+    unsigned short cementQuantity;
+    unsigned short waterQuantity;
+    int timeForMixing;
+}ConcreteRecipe;
 
-
+//functions
+void InitController(void);
+void ControllerInManualMode(void);
+void ReadScaleValues(void);
+void ReadSensorSignals(void);
+void ControllerInAutoMode(void);
+void SetLEDs(void);
 
 
 #endif
