@@ -6,6 +6,9 @@
 extern unsigned char QueryBuffer[QUERY_MAX_SIZE];
 extern unsigned char MBMasterResponseBuffer[RESPONSE_MAX_SIZE];
 
+unsigned char MBMasterResponseBuffer[RESPONSE_MAX_SIZE];
+unsigned char QueryBuffer[QUERY_MAX_SIZE];
+
 int MBMasterQueryBufferLenght;
 
 /*
