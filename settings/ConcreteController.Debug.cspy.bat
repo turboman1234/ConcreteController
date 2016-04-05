@@ -19,6 +19,22 @@
 @REM 
 
 
-"C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.0\common\bin\cspybat" "C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.0\arm\bin\armproc.dll" "C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.0\arm\bin\armstlink.dll"  %1 --plugin "C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.0\arm\bin\armbat.dll" --device_macro "C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.0\arm\config\debugger\ST\STM32F4xx.dmac" --backend -B "--endian=little" "--cpu=Cortex-M4F" "--fpu=VFPv4" "-p" "C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.0\arm\CONFIG\debugger\ST\STM32F417VG.ddf" "--semihosting" "--device=STM32F417VG" "--stlink_interface=SWD" "--stlink_reset_strategy=0,0" "--drv_swo_clock_setup=72000000,0,2000000" 
+@echo off 
 
+if not "%1" == "" goto debugFile 
 
+@echo on 
+
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.2\common\bin\cspybat" -f "D:\GitWork\Дипломна работа\STM32F4---ConcreteController\ConcreteController\settings\ConcreteController.Debug.general.xcl" --backend -f "D:\GitWork\Дипломна работа\STM32F4---ConcreteController\ConcreteController\settings\ConcreteController.Debug.driver.xcl" 
+
+@echo off 
+goto end 
+
+:debugFile 
+
+@echo on 
+
+"C:\Program Files (x86)\IAR Systems\Embedded Workbench 7.2\common\bin\cspybat" -f "D:\GitWork\Дипломна работа\STM32F4---ConcreteController\ConcreteController\settings\ConcreteController.Debug.general.xcl" "--debug_file=%1" --backend -f "D:\GitWork\Дипломна работа\STM32F4---ConcreteController\ConcreteController\settings\ConcreteController.Debug.driver.xcl" 
+
+@echo off 
+:end
