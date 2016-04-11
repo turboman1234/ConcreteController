@@ -146,14 +146,14 @@ void ReadScaleValues(void)
     // read inert scale's value with ModBus communication
     ReadHoldingRegisters(INERT_SCALE_VALUE_ADDRESS, 0, 1);
     MBMaster();
-    inertScaleValue = MBMasterResponseBuffer[0];
-    inertScaleValue = (inertScaleValue << 8) | MBMasterResponseBuffer[1];
+    inertScaleValue = *(MBMasterResponseBuffer + 3);
+    inertScaleValue = (inertScaleValue << 8) | MBMasterResponseBuffer[4];
     
     // read water scale's value with ModBus communication
     ReadHoldingRegisters(WATER_SCALE_VALUE_ADDRESS, 0, 1);
     MBMaster();
-    waterScaleValue = MBMasterResponseBuffer[0];
-    waterScaleValue = (waterScaleValue << 8) | MBMasterResponseBuffer[1];
+    waterScaleValue = *(MBMasterResponseBuffer + 3);
+    waterScaleValue = (waterScaleValue << 8) | MBMasterResponseBuffer[4];
 }
 
 void ReadSensorSignals(void)
@@ -210,6 +210,8 @@ void ControllerInAutoMode(void)
             {
                 doseSandCmd = OFF;
                     
+                recipe.gravelQuantity = inertScaleValue + recipe.gravelQuantity;
+                
                 autoModeState = eDoseGravel;
             }
             
@@ -219,7 +221,7 @@ void ControllerInAutoMode(void)
         }
     case eDoseGravel:
         {
-            if(inertScaleValue < inertScaleValue + recipe.gravelQuantity)
+            if(inertScaleValue < recipe.gravelQuantity)
             {
                 doseGravelCmd = ON;
             }
@@ -320,7 +322,7 @@ void ControllerInAutoMode(void)
                 //print message "Mixing!"
             }
             
-            autoModeState = ePrepareForRecipeExecution;
+            autoModeState = eOpenMixer;
             break;
         }
     case eOpenMixer:
@@ -332,7 +334,7 @@ void ControllerInAutoMode(void)
             else
             {
                 openCloseMixerCmd = OFF;
-                autoModeState = eEmptyInertMaterials;
+//                autoModeState = eEmptyInertMaterials;
             }            
             
             SetDigitalOutput(OPEN_CLOSE_MIXER_OUTPUT, openCloseMixerCmd);
