@@ -59,10 +59,6 @@ int main()
             {
                 //The recipe is completed.
                 controllerWorkMode = GetSwitchState(MANUAL_AUTO_MODE_SWITCH);
-                if(controllerWorkMode == ON)
-                {
-                    autoModeState = ePrepareForRecipeExecution;
-                }
             }
         }
         

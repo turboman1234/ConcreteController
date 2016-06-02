@@ -329,12 +329,12 @@ void ControllerInAutoMode(void)
         {
             if(openCloseMixerFbk == CLOSED)
             {
-                openCloseMixerCmd = ON;
+                openCloseMixerCmd = GetButtonState(OPEN_CLOSE_MIXER_BUTTON);
             }
             else
             {
                 openCloseMixerCmd = OFF;
-//                autoModeState = eEmptyInertMaterials;
+                autoModeState = ePrepareForRecipeExecution; // back in the beggining for new execution
             }            
             
             SetDigitalOutput(OPEN_CLOSE_MIXER_OUTPUT, openCloseMixerCmd);
