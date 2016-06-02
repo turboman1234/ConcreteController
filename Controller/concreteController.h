@@ -11,8 +11,8 @@
 #define LOOSE_SKIP_CART_ROPE_INPUT               INPUT_7 // indicates alarm state
 
 #define CEMENT_SCALE_ANALOG_INPUT                ADC_2
-#define INERT_SCALE_VALUE_ADDRESS                0
-#define WATER_SCALE_VALUE_ADDRESS                1
+#define INERT_SCALE_VALUE_ADDRESS                1
+#define WATER_SCALE_VALUE_ADDRESS                2
 
 
 //Outputs command to the plant
