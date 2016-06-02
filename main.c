@@ -13,16 +13,19 @@
 #include "rs232.h"
 #include "mbmaster.h"
 #include "concreteController.h"
+#include "LCD.h"
 
 extern RCC_ClocksTypeDef MYCLOCKS;
 extern ModBusSlaveUnit ModBusSlaves[MAX_MODBUS_SLAVE_DEVICES];
 extern tAutoModeStates autoModeState;
 
-int controllerWorkMode; 
+extern int controllerWorkMode = OFF; //init in manual state; 
 
 //Test Functions
 //void TestOutputsAndButtons(void);
 //void InitOutputsAndButtons(void);
+
+
 
 int main()
 {   
@@ -32,7 +35,7 @@ int main()
     
     controllerWorkMode = GetSwitchState(MANUAL_AUTO_MODE_SWITCH);
     
-    
+    InitLCD();
 //    InitOutputsAndButtons();
     
     while(1)
@@ -64,6 +67,12 @@ int main()
         }
         
         SetLEDs();
+        
+        if(IsVTimerElapsed(LCD_REFRESH_TIMER) == ELAPSED)
+        {
+            LCDTask();
+            SetVTimerValue(LCD_REFRESH_TIMER, T_500_MS);
+        }
         
         
         //TestOutputsAndButtons();
