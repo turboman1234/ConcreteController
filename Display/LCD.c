@@ -29,6 +29,7 @@ extern unsigned char skipCartDownCmd;
 
 extern unsigned char openCloseMixerFbk;
 extern ConcreteRecipe recipe;
+extern tAutoModeStates autoModeState;
 
 size_t LCDwrite(uint8_t);
 void LCDcommand(uint8_t);
@@ -653,12 +654,19 @@ void LCDTask(void)
     {
         //auto mode
         
-        restMixingTime = (recipe.timeForMixing / 60000) - (GetVTimerValue(MIXER_TIMER) / 60000); // in minutes, 1min = 60sec = 60 * 1000ms
+//        restMixingTime = (recipe.timeForMixing / 60000) - (GetVTimerValue(MIXER_TIMER) / 60000); // in minutes, 1min = 60sec = 60 * 1000ms
         
         sprintf(Row1, "Mode:         %6s", "Auto");
         sprintf(Row2, "S: %4dkg, G: %4dkg", recipe.sandQuantity, recipe.gravelQuantity);
         sprintf(Row3, "C: %4dkg, W: %4dkg", recipe.cementQuantity , recipe.waterQuantity);
-        sprintf(Row4, "Mixing time:%2dh%2dmin", 0, restMixingTime);
+        if(autoModeState == eOpenMixer)
+        {
+            sprintf(Row4, "Mixing time: Elapsed");
+        }
+        else
+        {
+            sprintf(Row4, "Mixing time:%2dh%2dmin", (recipe.timeForMixing / 60000) / 60, recipe.timeForMixing / 60000);
+        }
     }
     
     strcpy(Buffer, Row1);
