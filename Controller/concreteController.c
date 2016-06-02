@@ -210,7 +210,7 @@ void ControllerInAutoMode(void)
             {
                 doseSandCmd = OFF;
                     
-                recipe.gravelQuantity = inertScaleValue + recipe.gravelQuantity;
+//                recipe.gravelQuantity = inertScaleValue + recipe.gravelQuantity;
                 
                 autoModeState = eDoseGravel;
             }
@@ -221,7 +221,7 @@ void ControllerInAutoMode(void)
         }
     case eDoseGravel:
         {
-            if(inertScaleValue < recipe.gravelQuantity)
+            if(inertScaleValue < recipe.gravelQuantity + recipe.sandQuantity)
             {
                 doseGravelCmd = ON;
             }
@@ -309,6 +309,7 @@ void ControllerInAutoMode(void)
             else
             {
                 emptyWaterCmd = OFF;
+                SetVTimerValue(MIXER_TIMER, MIXING_TIME);
                 autoModeState = eMixingMaterials;
             }
             
@@ -317,12 +318,11 @@ void ControllerInAutoMode(void)
         }
     case eMixingMaterials:
         {
-            while(IsVTimerElapsed(MIXING_TIME) == NOT_ELAPSED)
+            if(IsVTimerElapsed(MIXER_TIMER) == ELAPSED)
             {
-                //print message "Mixing!"
+                autoModeState = eOpenMixer;
             }
             
-            autoModeState = eOpenMixer;
             break;
         }
     case eOpenMixer:
